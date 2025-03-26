@@ -14,7 +14,7 @@ async function handleGenerateNewShortUrl(req, res) {
     visitHistory: []
   })
 
-  return res.json({ id: shortID})
+  return res.render('home' , { id: shortID})
 }
 
 async function handleGetRedirected(req, res) {
@@ -26,7 +26,11 @@ async function handleGetRedirected(req, res) {
     visitHistory: { timestamp: Date.now()}
   }})
 
-  res.redirect(entry.redirectUrl)
+  if (!entry.redirectUrl.startsWith("http")) {
+    return res.redirect(`https://${entry.redirectUrl}`);
+  }
+  else res.redirect(entry.redirectUrl);
+
 }
 
 async function handleGetAnalytics(req, res) {
